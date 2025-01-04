@@ -1,0 +1,43 @@
+{% extends "intibase.html" %}
+
+{% block content %}
+
+    <div class="max-w-md mx-auto bg-red-900 border border-red-300/20 p-8 rounded-2xl shadow-xl mt-20 hover:shadow-red-500/30 transition duration-300">
+        <h2 class="text-4xl font-bold mb-6 bg-clip-text text-red-200 flex items-center">
+            <svg class="w-10 h-10 mr-3 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+            </svg>
+            Selamat Datang!
+        </h2>
+        <form method="POST" class="space-y-6">
+            <div class="mb-5 relative group">
+                <label class="block text-red-200 text-sm font-bold mb-2" for="username">
+                    Username
+                </label>
+                <input class="bg-red-800 shadow-inner appearance-none border border-red-300/40 rounded-xl w-full py-3 px-4 text-red-100 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transform transition duration-300 hover:shadow-red-500/20"
+                       id="username" name="username" type="text" required>
+            </div>
+            <div class="mb-6 relative group">
+                <label class="block text-red-200 text-sm font-bold mb-2" for="password">
+                    Password
+                </label>
+                <input class="bg-red-800 shadow-inner appearance-none border border-red-300/40 rounded-xl w-full py-3 px-4 text-red-100 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transform transition duration-300 hover:shadow-red-500/20"
+                       id="password" name="password" type="password" required>
+            </div>
+            <div class="flex items-center justify-between">
+                <button class="bg-gradient-to-r from-red-700 to-red-900 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition duration-300 shadow-lg hover:shadow-red-500/50"
+                        type="submit">
+                    Masuk
+                </button>
+                <button class="bg-gradient-to-r from-red-700 to-red-900 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition duration-300 shadow-lg hover:shadow-red-500/50">
+                    <a class="inline-block align-baseline font-bold text-sm text-white hover:text-red-100"
+                       href="{{ url_for('register') }}">
+                        Daftar
+                    </a>
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}

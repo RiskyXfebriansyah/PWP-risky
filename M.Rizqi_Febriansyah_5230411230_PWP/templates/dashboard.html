@@ -1,0 +1,175 @@
+{% extends "intibase.html" %}
+
+{% block content %}
+<div class="card bg-white/5 backdrop-blur-md border border-red-300/20 shadow-2xl rounded-2xl">
+    <div class="flex justify-center items-center mb-6 p-8">
+        <h2 class="text-4xl font-bold text-white flex items-center">
+            <svg class="w-12 h-12 mr-4" fill="currentColor" viewBox="0 0 20 20">
+            </svg>
+        </h2>
+        <div class="container mx-auto flex justify-center items-center px-4">
+            <button onclick="document.getElementById('addUserModal').classList.remove('hidden')"
+                    class="bg-red-900 text-white font-semibold py-4 px-8 rounded-xl shadow-lg transform hover:scale-105 transition duration-300 ease-in-out hover:bg-red-800 focus:outline-none flex items-center">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                Add User
+            </button>
+            {% if 'user_id' in session %}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="overflow-x-auto rounded-xl border border-red-300/20 mx-8 mb-8">
+        <table class="min-w-full divide-y divide-red-200/20">
+            <thead class="bg-red-900">
+                <tr>
+                    <th class="px-8 py-5 text-left text-sm font-medium text-red-100 uppercase tracking-wider">Username</th>
+                    <th class="px-8 py-5 text-left text-sm font-medium text-red-100 uppercase tracking-wider">Email</th>
+                    <th class="px-8 py-5 text-left text-sm font-medium text-red-100 uppercase tracking-wider">Role</th>
+                    <th class="px-8 py-5 text-left text-sm font-medium text-red-100 uppercase tracking-wider">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-red-950/50 divide-y divide-red-200/20">
+                {% for user in users %}
+                <tr class="hover:bg-red-900/30 transition duration-300">
+                    <td class="px-8 py-5 whitespace-nowrap text-red-100">{{ user.username }}</td>
+                    <td class="px-8 py-5 whitespace-nowrap text-red-100">{{ user.email }}</td>
+                    <td class="px-8 py-5 whitespace-nowrap">
+                        <span class="px-5 py-2 inline-flex text-xs leading-5 font-semibold
+                                   {% if user.role == 'admin' %}bg-red-900 text-red-100{% else %}bg-red-800 text-red-100{% endif %}">
+                            {{ user.role }}
+                        </span>
+                    </td>
+                    <td class="px-8 py-5 whitespace-nowrap text-sm font-medium flex justify-start">
+                        <button onclick="editUser('{{ user.id }}', '{{ user.username }}', '{{ user.email }}', '{{ user.role }}')"
+                                class="text-blue-400 hover:text-blue-300 mr-4 transform hover:scale-110 transition duration-300">
+                            <span class="flex items-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                                </svg>
+                            </span>
+                        </button>
+                        <a href="{{ url_for('delete_user', id=user.id) }}"
+                           class="text-red-400 hover:text-red-300 transform hover:scale-110 transition duration-300"
+                           onclick="return confirm('Apakah anda yakin ingin menghapus pengguna ini?')">
+                            <span class="flex items-center">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </span>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Add User Modal -->
+<div id="addUserModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md overflow-y-auto h-full w-full z-50">
+    <div class="relative top-20 mx-auto p-8 border w-[28rem] shadow-2xl rounded-2xl bg-red-900">
+        <div class="mt-3">
+            <h3 class="text-2xl font-bold text-red-100">Tambah Pengguna Baru</h3>
+            <form method="POST" action="{{ url_for('add_user') }}" class="mt-6">
+                <div class="mb-5">
+                    <label class="block text-red-200 text-sm font-bold mb-2" for="new-username">Username</label>
+                    <input type="text" name="username" id="new-username" required
+                           class="bg-red-800/30 shadow-inner appearance-none border border-red-300/40 rounded-xl w-full py-3 px-4 text-red-100 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+                <div class="mb-5">
+                    <label class="block text-red-200 text-sm font-bold mb-2" for="new-email">Email</label>
+                    <input type="email" name="email" id="new-email" required
+                           class="bg-red-800/30 shadow-inner appearance-none border border-red-300/40 rounded-xl w-full py-3 px-4 text-red-100 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+                <div class="mb-5">
+                    <label class="block text-red-200 text-sm font-bold mb-2" for="new-password">Password</label>
+                    <input type="password" name="password" id="new-password" required minlength="6"
+                           class="bg-red-800/30 shadow-inner appearance-none border border-red-300/40 rounded-xl w-full py-3 px-4 text-red-100 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-red-200 text-sm font-bold mb-2" for="new-role">Role</label>
+                    <select name="role" id="new-role" required
+                            class="bg-red-800/30 shadow-inner appearance-none border border-red-300/40 rounded-xl w-full py-3 px-4 text-red-100 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="flex justify-between">
+                    <button type="submit"
+                            class="bg-red-800 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition duration-300">
+                        Tambah Pengguna
+                    </button>
+                    <button type="button"
+                            onclick="document.getElementById('addUserModal').classList.add('hidden')"
+                            class="bg-red-700 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition duration-300">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit User Modal -->
+<div id="editUserModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md overflow-y-auto h-full w-full z-50">
+    <div class="relative top-20 mx-auto p-8 border w-[28rem] shadow-2xl rounded-2xl bg-red-900">
+        <div class="mt-3">
+            <h3 class="text-2xl font-bold text-red-100">Edit Pengguna</h3>
+            <form id="editUserForm" method="POST" action="" class="mt-6">
+                <div class="mb-5">
+                    <label class="block text-red-200 text-sm font-bold mb-2" for="edit-username">Username</label>
+                    <input type="text" name="username" id="edit-username" required
+                           class="bg-red-800/30 shadow-inner appearance-none border border-red-300/40 rounded-xl w-full py-3 px-4 text-red-100 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+                <div class="mb-5">
+                    <label class="block text-red-200 text-sm font-bold mb-2" for="edit-email">Email</label>
+                    <input type="email" name="email" id="edit-email" required
+                           class="bg-red-800/30 shadow-inner appearance-none border border-red-300/40 rounded-xl w-full py-3 px-4 text-red-100 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+                <div class="mb-5">
+                    <label class="block text-red-200 text-sm font-bold mb-2" for="edit-password">Password (kosongkan jika tidak ingin mengubah)</label>
+                    <input type="password" name="password" id="edit-password" minlength="6"
+                           class="bg-red-800/30 shadow-inner appearance-none border border-red-300/40 rounded-xl w-full py-3 px-4 text-red-100 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-red-200 text-sm font-bold mb-2" for="edit-role">Role</label>
+                    <select name="role" id="edit-role" required
+                            class="bg-red-800/30 shadow-inner appearance-none border border-red-300/40 rounded-xl w-full py-3 px-4 text-red-100 leading-tight focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="flex justify-between">
+                    <button type="submit"
+                            class="bg-red-800 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition duration-300">
+                        Perbarui Pengguna
+                    </button>
+                    <button type="button"
+                            onclick="document.getElementById('editUserModal').classList.add('hidden')"
+                            class="bg-red-700 text-white font-bold py-3 px-6 rounded-xl transform hover:scale-105 transition duration-300">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Fungsi untuk mengisi form edit dengan data pengguna yang dipilih
+    function editUser(id, username, email, role) {
+        // Mengisi input form dengan data pengguna
+        document.getElementById('edit-username').value = username;
+        document.getElementById('edit-email').value = email;
+        document.getElementById('edit-role').value = role;
+
+        // Mengubah action form dengan ID pengguna
+        document.getElementById('editUserForm').action = "/edit_user/" + id;
+
+        // Menampilkan modal edit
+        document.getElementById('editUserModal').classList.remove('hidden');
+    }
+</script>
+{% endblock %}

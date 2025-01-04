@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MANAGEMENT USER</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<nav class="bg-red-600 border-b border-red-800 text-white shadow-xl">
+    <div class="container mx-auto flex justify-center items-center py-6 px-8">
+        <h1 class="text-3xl font-bold tracking-tight flex items-center">
+            <svg class="w-10 h-10 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/>
+            </svg>
+             M.RIZQI FEBRIANSYAH_5230411230
+        </h1>
+        {% if 'user_id' in session %}
+        <a href="{{ url_for('logout') }}" class="absolute right-8 px-6 py-2.5 bg-gradient-to-r from-red-900 to-red-700 hover:from-red-950 hover:to-red-800 rounded-lg transition duration-300 ease-in-out shadow-lg hover:shadow-red-500/50 font-semibold transform hover:scale-105">
+            Logout
+        </a>
+        {% endif %}
+    </div>
+</nav>
+<br> <br> <br>
+<br> 
+    <div class="container mx-auto mt-10 px-4">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="bg-green-600 text-white px-6 py-4 rounded-lg shadow-md mb-6">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class=" p-10">
+            {% block content %}
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Welcome to Management User</h2>
+            <p class="text-gray-600 leading-relaxed">This is where content will be displayed. Use this block for dynamic data or user interaction.</p>
+            {% endblock %}
+        </div>
+    </div>
+
+</body>
+</html>
